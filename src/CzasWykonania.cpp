@@ -1,26 +1,30 @@
-#pragma once
+#include "CzasWykonania.h"
 #include "Population.hpp"
 #include "ZarzadcaZadan.hpp"
 #include "Plan.h"
+#include "Maszyna.h"
 
-bool operator > ( const FItnessFunction& toCompare ) const
+CzasWykonania::CzasWykonania( int timeTotal_ ) : timeTotal(timeTotal_)
+{}
+
+bool CzasWykonania::operator > ( const evol::FitnessFunction& toCompare ) const
 {
-    return timeTotal > toComare.timeTotal;
+    return timeTotal > ((CzasWykonania&)toCompare).timeTotal;
 }
 
-bool operator == ( const FitnessFunction& toCompare ) const
+bool CzasWykonania::operator == ( const evol::FitnessFunction& toCompare ) const
 {
-    return timeTotal == toCompare.timeTotal;
+    return timeTotal == ((CzasWykonania&)toCompare).timeTotal;
 }
 
-void calculate( const Subject& toCalculate )
+void CzasWykonania::calculate( const evol::Subject& toCalculate )
 {
-    const Plan* plan = *toCalculate; 
+    const Plan& plan = (Plan&)toCalculate; 
     timeTotal = 0;
-    std::list<int,std::list<int>> queue = plan->getKolejnosc();
-    std::vector<MPtr> maszyny;
+    std::queue<int, std::list<int>> queue(plan.getKolejnosc());
+    std::vector<Maszyna*> maszyny;
     for(int i = 0; i < ZarzadcaZadan::getInstance().getIloscMaszyn(); ++i)
-        maszyny.push_back(MPtr(new Maszyna(i)));
+        maszyny.push_back(new Maszyna(i));
     
     for(int i = 0; i < ZarzadcaZadan::getInstance().getIloscZadan(); ++i)
     {
@@ -29,13 +33,14 @@ void calculate( const Subject& toCalculate )
         maszyny[0]->addZadanie(biezaceZadanie);
     }
 
+    boost::optional<int> min;
     do
     {
-        boost::optional<int> min;
+        min.reset();
         for(int i = 0; i < ZarzadcaZadan::getInstance().getIloscMaszyn(); ++i)        
         {
-            if(maszyny[i]->hasTask
-                && (maszyny[i]->getTimeLeft() < min) || !min )               
+            if( (maszyny[i]->hasZadanie())
+                && ((maszyny[i]->getTimeLeft() < min) || !min))               
             {
                     min = maszyny[i]->getTimeLeft();                                       
             }
@@ -43,16 +48,30 @@ void calculate( const Subject& toCalculate )
 
         if( min )
         {
+            int toRoll = boost::get<int>(min);
             for(int i = 0; i < ZarzadcaZadan::getInstance().getIloscMaszyn(); ++i)
             {
-                boost::optional<int> toAdd = maszyny[i]->rollTime(min);
+                boost::optional<int> toAdd = maszyny[i]->rollTime(toRoll);
                 if(toAdd && ((i+1) < ZarzadcaZadan::getInstance().getIloscMaszyn()))
                 {
-                    maszyny[i]->addZadanie(toAdd);
+                    maszyny[i]->addZadanie(boost::get<int>(toAdd));
                 }
             }
-            timeTotal+=min;
+            timeTotal += toRoll;
         }
     
     }while( min );
 }
+
+int CzasWykonania::getTimeTotal()
+{
+    return timeTotal;
+}
+
+std::unique_ptr<evol::FitnessFunction> CzasWykonania::clone() const
+{
+    return std::unique_ptr<evol::FitnessFunction>(new CzasWykonania(timeTotal));
+}
+
+void CzasWykonania::print()
+{}
