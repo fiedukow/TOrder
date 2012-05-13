@@ -10,7 +10,7 @@ void Kolejnosc::mutate()
     // FIXME implement this
 }
 
-std::list<int>& Kolejnosc::operator*() const
+const std::list<int>& Kolejnosc::operator*() const 
 {
     return kolejnosc_;
 }

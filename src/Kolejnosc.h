@@ -13,7 +13,7 @@ class Kolejnosc : public evol::Chromosome
 public:
     evol::ChromosomePtr crossWith(evol::ChromosomePtr) const;
     void mutate();
-    std::list<int>& operator*() const;
+    const std::list<int>& operator*() const;
 private:
     std::list<int> kolejnosc_;
 };
