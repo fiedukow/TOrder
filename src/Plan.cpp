@@ -1,4 +1,4 @@
-#include "EvolFunctions.cpp"
+#include "EvolFunctions.hpp"
 
 #include "Plan.h"
 
