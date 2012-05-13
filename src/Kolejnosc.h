@@ -2,6 +2,7 @@
 #define KOLEJNOSC_H
 
 #include "Chromosome.hpp"
+#include <list>
 
 class Kolejnosc;
 
