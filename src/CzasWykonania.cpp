@@ -7,6 +7,9 @@
 CzasWykonania::CzasWykonania( int timeTotal_ ) : timeTotal(timeTotal_)
 {}
 
+CzasWykonania::CzasWykonania() : timeTotal(0)
+{}
+
 bool CzasWykonania::operator > ( const evol::FitnessFunction& toCompare ) const
 {
     return timeTotal > ((CzasWykonania&)toCompare).timeTotal;

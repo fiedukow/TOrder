@@ -9,6 +9,7 @@ class CzasWykonania : public evol::FitnessFunction
     int timeTotal;
 
     public:
+    CzasWykonania();
     CzasWykonania( int timeTotal_ );
     virtual bool operator > ( const evol::FitnessFunction& toCompare ) const;
     virtual bool operator == ( const evol::FitnessFunction& toCompare ) const;
