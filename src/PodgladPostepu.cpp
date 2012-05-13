@@ -1,8 +1,8 @@
 #include "PodgladPostepu.hpp"
-#include "CzasWykonania.hpp"
 #include "EvolFunctions.hpp"
 #include "Subject.hpp"
-#include "Realizacja.hpp"
+#include "CzasWykonania.h"
+#include "Plan.h"
 
 
 PodgladPostepu::PodgladPostepu() : populationCounter(0)
@@ -10,7 +10,7 @@ PodgladPostepu::PodgladPostepu() : populationCounter(0)
 
 void PodgladPostepu::update( evol::Population& population )
 {
-    Realizacja* best = evol::EvolFunctions::ptr_cast<SubjectPtr, Realizacja>(
+    Plan* best = evol::EvolFunctions::ptr_cast<evol::SubjectPtr, Plan>(
             population.getSubjects().at( population.getBestId() )
     );
     ++populationCounter;
