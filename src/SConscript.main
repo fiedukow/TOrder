@@ -1,0 +1,8 @@
+# vim: ft=python
+
+env = Environment(
+                    CCFLAGS = '-O2 -std=c++0x'
+                 )
+sourceTargets = Glob('*.[ch]pp')
+
+env.Program('TOrder',sourceTargets)
