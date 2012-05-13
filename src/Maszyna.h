@@ -1,13 +1,20 @@
 #pragma once
-#include <list>
+#include <queue>
+#include <boost/optional.hpp>
+#include <memory>
 
 class Maszyna
 {
-    int zadanie;
+    typedef std::shared_ptr<Maszyna> MPtr; 
     int id;
-    unsigned int time_left;
-    std::quque<int> bufor;
-    addZadanie(int zadanie);
-    rollTime(int time);
-    getTimeLeft();
-}
+    int zadanie;
+    int timeLeft;
+    std::queue<int> bufor;
+
+    public:
+    Maszyna(int id_);
+    void addZadanie(int zadanie);
+    boost::optional<int> rollTime(int time);
+    int getTimeLeft();
+    bool hasZadanie();
+};
