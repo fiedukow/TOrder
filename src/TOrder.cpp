@@ -1,7 +1,12 @@
 #include "PodgladPostepu.hpp"
-#include "Realizacja.hpp"
+#include "Subject.hpp"
+#include "Plan.h"
 #include "Observer.hpp"
-#include "CzasRealizacji.hpp"
+#include "CzasWykonania.h"
+#include "ZarzadcaZadan.hpp"
+#include "EvolFunctions.hpp"
+
+using namespace evol;
 
 int main( int argc, char* argv[] )
 {
@@ -11,16 +16,17 @@ int main( int argc, char* argv[] )
         return -1;
     }
 
-    CzasRealizacji goal(8);
-    SubjectPtr realizacja( (Subject*) new Realizacja(argv[1]) );
+    ZarzadcaZadan::getInstance( argv[1] );
+    CzasWykonania goal(120);
+    SubjectPtr realizacja( (Subject*) new Plan() );
     realizacja->setInitialValue();
     Population populacja( ( FitnessFunction& ) goal, realizacja, 1000, 0.2, 2.0 );
     populacja.registerObserver( NObserverPtr( new PodgladPostepu() ) );
 
-    Realizacja *wynik;
+    Plan *wynik;
     try
     {
-        wynik = EvolFunctions::ptr_cast< SubjectPtr, Realizacja >(populacja.start( ));
+        wynik = EvolFunctions::ptr_cast< SubjectPtr, Plan >(populacja.start( ));
     }
     catch ( OutOfBoundException &e )
     {
