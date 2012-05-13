@@ -10,7 +10,7 @@
 class Plan : public evol::Subject
 {
 public:
-    std::list<int>& getKolejnosc() const;
+    const std::list<int>& getKolejnosc() const;
     void setInitialValue();
     evol::SubjectPtr clone() const;
     void print() const;
