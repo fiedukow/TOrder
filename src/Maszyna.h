@@ -5,13 +5,13 @@
 
 class Maszyna
 {
-    typedef std::shared_ptr<Maszyna> MPtr; 
     int id;
     int zadanie;
     int timeLeft;
     std::queue<int> bufor;
 
     public:
+    typedef std::shared_ptr<Maszyna> MPtr; 
     Maszyna(int id_);
     void addZadanie(int zadanie);
     boost::optional<int> rollTime(int time);
