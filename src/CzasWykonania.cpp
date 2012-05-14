@@ -29,12 +29,12 @@ void CzasWykonania::calculate( const evol::Subject& toCalculate )
     const Plan& plan = (Plan&)toCalculate; 
     timeTotal = 0;
     std::queue<int, std::list<int>> queue(plan.getKolejnosc());
-    std::vector<Maszyna*> maszyny;
+    std::vector<MPtr> maszyny;
 
     M("Tworze maszyny...");
 
     for(int i = 0; i < ZarzadcaZadan::getInstance().getIloscMaszyn(); ++i)
-        maszyny.push_back(new Maszyna(i));
+        maszyny.push_back(MPtr(new Maszyna(i)));
     
     M("Dodaje maszyny do pierwszego bufora...");
 
