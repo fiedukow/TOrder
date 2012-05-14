@@ -10,6 +10,14 @@ Kolejnosc::Kolejnosc()
     }
 }
 
+Kolejnosc::Kolejnosc(const Kolejnosc& toCpy)
+{
+    for( int i : toCpy.kolejnosc_ )
+    {
+        kolejnosc_.push_back(i);   
+    }   
+}
+
 evol::ChromosomePtr Kolejnosc::crossWith(evol::ChromosomePtr toCross) const
 {
     // FIXME implement this
@@ -22,7 +30,7 @@ void Kolejnosc::mutate()
 
 evol::ChromosomePtr Kolejnosc::clone()
 {
-    //FIXME implement this
+    return evol::ChromosomePtr(new Kolejnosc(*this));
 }
 
 const std::list<int>& Kolejnosc::operator*() const 
