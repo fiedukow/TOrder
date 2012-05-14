@@ -11,6 +11,7 @@ typedef std::shared_ptr<Kolejnosc> KolejnoscPtr;
 class Kolejnosc : public evol::Chromosome
 {
 public:
+    Kolejnosc();
     evol::ChromosomePtr crossWith(evol::ChromosomePtr) const;
     void mutate();
     const std::list<int>& operator*() const;

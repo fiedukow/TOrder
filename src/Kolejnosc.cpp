@@ -1,4 +1,14 @@
 #include "Kolejnosc.h"
+#include "ZarzadcaZadan.hpp"
+
+Kolejnosc::Kolejnosc()
+{
+    int zadan = ZarzadcaZadan::getInstance().getIloscZadan();
+    for(int i=0; i<zadan; ++i)
+    {
+        kolejnosc_.push_back(i);
+    }
+}
 
 evol::ChromosomePtr Kolejnosc::crossWith(evol::ChromosomePtr toCross) const
 {
