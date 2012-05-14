@@ -1,5 +1,5 @@
+#include <iostream>
 #include "EvolFunctions.hpp"
-
 #include "Plan.h"
 
 const std::list<int>& Plan::getKolejnosc() const
@@ -22,5 +22,10 @@ evol::SubjectPtr Plan::clone() const
 
 void Plan::print() const
 {
-    // FIXME implement this
+    std::cout << "PLAN WYKONANIA: "<< std::endl;
+    const std::list<int>& kol = getKolejnosc();
+    for(int a : kol)
+    {
+        std::cout << a << " ";
+    }
 }
