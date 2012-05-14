@@ -14,6 +14,7 @@ public:
     evol::ChromosomePtr crossWith(evol::ChromosomePtr) const;
     void mutate();
     const std::list<int>& operator*() const;
+    evol::ChromosomePtr clone();
 private:
     std::list<int> kolejnosc_;
 };
