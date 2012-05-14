@@ -61,7 +61,7 @@ evol::ChromosomePtr Kolejnosc::crossWith(evol::ChromosomePtr toCross) const
             unsigned int position = evol::EvolFunctions::random(0,notUsed.size()-1);
             k[elem] = *(notUsed.begin()+position);
         }
-        notUsed.erase(std::find(notUsed.begin(),notUsed.end(),elem));
+        notUsed.erase(std::find(notUsed.begin(),notUsed.end(),k[elem]));
     }
     assert(notUsed.empty() && "Each element should be taken.");
     assert(k.size() == kolejnosc_.size() && "Size of kolejnosc should be the same, after crossover.");
@@ -70,7 +70,14 @@ evol::ChromosomePtr Kolejnosc::crossWith(evol::ChromosomePtr toCross) const
 
 void Kolejnosc::mutate()
 {
-    // FIXME implement this
+    unsigned int i = kolejnosc_.size()-1;
+    for(;i>0;--i)
+    {
+        if(evol::EvolFunctions::random()<0.25)
+        {
+            std::swap(kolejnosc_[i],kolejnosc_[evol::EvolFunctions::random(0,kolejnosc_.size())]);
+        }
+    }
 }
 
 evol::ChromosomePtr Kolejnosc::clone()
