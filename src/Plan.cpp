@@ -3,10 +3,15 @@
 #include "Plan.h"
 #include "EvolFunctions.hpp"
 
-const std::list<int>& Plan::getKolejnosc() const
+std::list<int> Plan::getKolejnosc() const
 {
     Kolejnosc &kolejnosc = *evol::EvolFunctions::ptr_cast<evol::ChromosomePtr,Kolejnosc>(chromosomes[0]);
-    return *kolejnosc;
+    std::list<int> toReturn;
+    for(auto& elem : *kolejnosc)
+    {
+        toReturn.push_back(elem);
+    }
+    return toReturn;
 }
 
 void Plan::setInitialValue()

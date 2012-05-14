@@ -3,6 +3,7 @@
 
 #include "Chromosome.hpp"
 #include <list>
+#include <vector>
 
 class Kolejnosc;
 
@@ -15,10 +16,10 @@ public:
     Kolejnosc(const Kolejnosc&);
     evol::ChromosomePtr crossWith(evol::ChromosomePtr) const;
     void mutate();
-    const std::list<int>& operator*() const;
+    const std::vector<int>& operator*() const;
     evol::ChromosomePtr clone();
 private:
-    std::list<int> kolejnosc_;
+    std::vector<int> kolejnosc_;
 };
 
 #endif
