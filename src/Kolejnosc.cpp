@@ -41,8 +41,8 @@ evol::ChromosomePtr Kolejnosc::crossWith(evol::ChromosomePtr toCross) const
     {
         int parentA = evol::EvolFunctions::ptr_cast<evol::ChromosomePtr,Kolejnosc>(toCross)->kolejnosc_[elem];
         int parentB = kolejnosc_[elem];
-        bool aAvailable = (std::find(k.begin(),k.end(),parentA) != k.end());
-        bool bAvailable = (std::find(k.begin(),k.end(),parentB) != k.end());
+        bool aAvailable = (std::find(k.begin(),k.end(),parentA) == k.end());
+        bool bAvailable = (std::find(k.begin(),k.end(),parentB) == k.end());
         
         if(aAvailable && bAvailable)
         {
