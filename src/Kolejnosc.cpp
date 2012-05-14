@@ -70,12 +70,12 @@ void Kolejnosc::mutate()
     {
         if(evol::EvolFunctions::random()<0.25)
         {
-            std::swap(kolejnosc_[i],kolejnosc_[evol::EvolFunctions::random(0,kolejnosc_.size())]);
+            std::swap(kolejnosc_[i],kolejnosc_[evol::EvolFunctions::random(0,kolejnosc_.size()-1)]);
         }
     }
 }
 
-evol::ChromosomePtr Kolejnosc::clone()
+evol::ChromosomePtr Kolejnosc::clone() const
 {
     return evol::ChromosomePtr(new Kolejnosc(*this));
 }

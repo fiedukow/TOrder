@@ -2,7 +2,6 @@
 #define KOLEJNOSC_H
 
 #include "Chromosome.hpp"
-#include <list>
 #include <vector>
 
 class Kolejnosc;
@@ -17,7 +16,7 @@ public:
     evol::ChromosomePtr crossWith(evol::ChromosomePtr) const;
     void mutate();
     const std::vector<int>& operator*() const;
-    evol::ChromosomePtr clone();
+    evol::ChromosomePtr clone() const;
 private:
     std::vector<int> kolejnosc_;
 };
