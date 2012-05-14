@@ -1,6 +1,7 @@
 #ifndef KOLEJNOSC_H
 #define KOLEJNOSC_H
 
+#include <boost/optional.hpp>
 #include "Chromosome.hpp"
 #include <vector>
 
@@ -17,8 +18,10 @@ public:
     void mutate();
     const std::vector<int>& operator*() const;
     evol::ChromosomePtr clone() const;
+    unsigned int getTimeTotal();
 private:
     std::vector<int> kolejnosc_;
+    boost::optional<unsigned int> timeTotal;
 };
 
 #endif

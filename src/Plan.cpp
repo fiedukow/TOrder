@@ -26,6 +26,11 @@ evol::SubjectPtr Plan::clone() const
     return newPlan;
 }
 
+unsigned int Plan::getTimeTotal() const 
+{
+    return evol::EvolFunctions::ptr_cast<evol::ChromosomePtr,Kolejnosc>(chromosomes[0])->getTimeTotal();
+}
+
 void Plan::print() const
 {
     CzasWykonania czas;

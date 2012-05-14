@@ -13,6 +13,7 @@ public:
     std::list<int> getKolejnosc() const;
     void setInitialValue();
     evol::SubjectPtr clone() const;
+    unsigned int getTimeTotal() const;
     void print() const;
 };
 
