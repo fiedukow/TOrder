@@ -21,4 +21,5 @@ class CzasWykonania : public evol::FitnessFunction
     std::unique_ptr<evol::FitnessFunction> clone() const ;
 
     virtual void print();
+    int getCzasWykonania();
 };
