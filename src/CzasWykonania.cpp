@@ -47,7 +47,7 @@ void CzasWykonania::calculate( const evol::Subject& toCalculate )
 
     boost::optional<int> min;
     do
-    {        
+    {
         min.reset();
 
         M("Szukam minimum...");
@@ -55,7 +55,7 @@ void CzasWykonania::calculate( const evol::Subject& toCalculate )
         for(int i = 0; i < ZarzadcaZadan::getInstance().getIloscMaszyn(); ++i)        
         {
             if( (maszyny[i]->hasZadanie())
-                && ((maszyny[i]->getTimeLeft() < min) || !min))               
+                && (!min || (maszyny[i]->getTimeLeft() < min)))               
             {
                     M("Znalazłem minimum");
                     min = maszyny[i]->getTimeLeft();                                       
@@ -70,6 +70,7 @@ void CzasWykonania::calculate( const evol::Subject& toCalculate )
             V("Przesuwam czas o ", toRoll);
             for(int i = 0; i < ZarzadcaZadan::getInstance().getIloscMaszyn(); ++i)
             {
+                assert(i<maszyny.size());
                 boost::optional<int> toAdd = maszyny[i]->rollTime(toRoll);
                 if(toAdd && ((i+1) < ZarzadcaZadan::getInstance().getIloscMaszyn()))
                 {

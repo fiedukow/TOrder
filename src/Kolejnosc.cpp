@@ -14,13 +14,8 @@ Kolejnosc::Kolejnosc()
     }
 }
 
-Kolejnosc::Kolejnosc(const Kolejnosc& toCpy)
-{
-    for( int i : toCpy.kolejnosc_ )
-    {
-        kolejnosc_.push_back(i);   
-    }   
-}
+Kolejnosc::Kolejnosc(const Kolejnosc& toCpy) : kolejnosc_(toCpy.kolejnosc_)
+{}
 
 evol::ChromosomePtr Kolejnosc::crossWith(evol::ChromosomePtr toCross) const
 {

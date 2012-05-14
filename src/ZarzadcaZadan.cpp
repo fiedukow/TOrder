@@ -2,6 +2,7 @@
 #include "EvolException.hpp"
 #include <string>
 #include <fstream>
+#include <cassert>
 
 typedef int time_type;
 
@@ -20,7 +21,7 @@ ZarzadcaZadan::ZarzadcaZadan( std::string fileName ) throw (evol::CannotOpenFile
     std::ifstream fileToRead;
     fileToRead.open( fileName.c_str(), std::ios::in );
     if( fileToRead.is_open() )
-    {   
+    { 
         fileToRead >> iloscMaszyn >> iloscZadan;
         czasy = new time_type*[ iloscMaszyn ];
         for ( int i = 0; i < iloscMaszyn; ++i )
@@ -71,6 +72,7 @@ time_type ZarzadcaZadan::czasObrobki( int idMaszyny, int idZadania )
 {
     if( idMaszyny >= iloscMaszyn || idZadania >= iloscZadan )
     {
+        assert("out of bound exception" && false);
         /*TODO: out of bound exception here */ 
     }
     return czasy[idMaszyny][idZadania];

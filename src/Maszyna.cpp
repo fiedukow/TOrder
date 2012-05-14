@@ -16,7 +16,7 @@ boost::optional<int> Maszyna::rollTime(int time)
 {
     V("Przesuwam czas o ", time);
     V("Maszyna: ", id);
-   
+ 
     if(zadanie==-1)
     {
         if(!bufor.empty())
