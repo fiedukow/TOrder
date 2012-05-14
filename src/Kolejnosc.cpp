@@ -33,7 +33,7 @@ evol::ChromosomePtr Kolejnosc::crossWith(evol::ChromosomePtr toCross) const
         notUsed.push_back(i);
         ++i;
     }
-    random_shuffle(sequence.begin(),sequence.end());
+    std::random_shuffle(sequence.begin(),sequence.end());
     Kolejnosc *newKolejnosc = new Kolejnosc();
     assert(newKolejnosc != NULL && "Allocation failure.");
     std::vector<int>& k = newKolejnosc->kolejnosc_;
@@ -58,10 +58,10 @@ evol::ChromosomePtr Kolejnosc::crossWith(evol::ChromosomePtr toCross) const
         }
         else
         {
-            unsigned int position = evol::EvolFunctions::random(0,notUsed.size());
+            unsigned int position = evol::EvolFunctions::random(0,notUsed.size()-1);
             k[elem] = *(notUsed.begin()+position);
         }
-        notUsed.erase(k.begin()+elem);
+        notUsed.erase(std::find(notUsed.begin(),notUsed.end(),elem));
     }
     assert(notUsed.empty() && "Each element should be taken.");
     assert(k.size() == kolejnosc_.size() && "Size of kolejnosc should be the same, after crossover.");
