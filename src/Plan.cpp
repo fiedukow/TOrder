@@ -1,6 +1,7 @@
 #include <iostream>
-#include "EvolFunctions.hpp"
+#include "CzasWykonania.h"
 #include "Plan.h"
+#include "EvolFunctions.hpp"
 
 const std::list<int>& Plan::getKolejnosc() const
 {
@@ -22,10 +23,16 @@ evol::SubjectPtr Plan::clone() const
 
 void Plan::print() const
 {
+    CzasWykonania czas;
+    czas.calculate(*this);
+
     std::cout << "PLAN WYKONANIA: "<< std::endl;
     const std::list<int>& kol = getKolejnosc();
     for(int a : kol)
     {
         std::cout << a << " ";
     }
+    std::cout << std::endl;
+
+    std::cout << "Czas wykonania " << czas.getTimeTotal() << std::endl;
 }
