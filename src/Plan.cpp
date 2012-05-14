@@ -10,7 +10,7 @@ const std::list<int>& Plan::getKolejnosc() const
 
 void Plan::setInitialValue()
 {
-    // FIXME implement this
+    addChromosome(evol::ChromosomePtr(new Kolejnosc()));
 }
 
 evol::SubjectPtr Plan::clone() const
