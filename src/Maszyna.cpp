@@ -1,5 +1,6 @@
 #include "Maszyna.h"
 #include "ZarzadcaZadan.hpp"
+#include "debug.h"
 #include <cassert>
 #include <boost/optional.hpp>
 
@@ -13,18 +14,39 @@ void Maszyna::addZadanie(int zadanie)
 
 boost::optional<int> Maszyna::rollTime(int time)
 {
-    if( zadanie != -1 )
+    V("Przesuwam czas o ", time);
+    V("Maszyna: ", id);
+   
+    if(zadanie==-1)
+    {
+        if(!bufor.empty())
+        {
+            M("Wyciagam z bufora...");
+            zadanie=bufor.front();
+            V("Nowe zadanie", zadanie);
+            bufor.pop();
+            timeLeft = ZarzadcaZadan::getInstance().czasObrobki(id,zadanie);            
+        }
+    }
+    else
     {
         timeLeft -= time;
         assert( timeLeft >= 0 && "Wybrano nienajkrotsze zadanie");
         if(timeLeft == 0)
         {
-            int completed = zadanie;
+            V("Zadanie zakonczone ", zadanie);
+            int completed = zadanie;           
             if( !bufor.empty() )
             {
+                M("Wyciagam z bufora...");
                 zadanie = bufor.front();
                 bufor.pop();
+                V("Nowe zadanie", zadanie);
                 timeLeft = ZarzadcaZadan::getInstance().czasObrobki(id,zadanie);
+            }
+            else
+            {
+                zadanie = -1;
             }
             return completed;
         }
