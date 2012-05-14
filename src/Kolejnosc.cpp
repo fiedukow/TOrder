@@ -1,5 +1,6 @@
 #include "Kolejnosc.h"
 #include "ZarzadcaZadan.hpp"
+#include "EvolFunctions.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -38,7 +39,7 @@ evol::ChromosomePtr Kolejnosc::crossWith(evol::ChromosomePtr toCross) const
     std::vector<int>& k = newKolejnosc->kolejnosc_;
     for(auto& elem : sequence)
     {
-        int parentA = evol::EvolFunctions::ptr_cast<ChromosomePtr,Kolejnosc>(toCross)->kolejnosc_[elem];
+        int parentA = evol::EvolFunctions::ptr_cast<evol::ChromosomePtr,Kolejnosc>(toCross)->kolejnosc_[elem];
         int parentB = kolejnosc_[elem];
         bool aAvailable = (std::find(k.begin(),k.end(),parentA) != k.end());
         bool bAvailable = (std::find(k.begin(),k.end(),parentB) != k.end());
