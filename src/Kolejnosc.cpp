@@ -8,10 +8,10 @@
 #include <list>
 #include <algorithm>
 #include <cassert>
+#include <map>
 
 Kolejnosc::Kolejnosc()
 {
-    srand(time(NULL));
     int zadan = ZarzadcaZadan::getInstance().getIloscZadan();
     for(int i=0; i<zadan; ++i)
     {
@@ -25,48 +25,41 @@ Kolejnosc::Kolejnosc(const Kolejnosc& toCpy) : kolejnosc_(toCpy.kolejnosc_)
 
 evol::ChromosomePtr Kolejnosc::crossWith(evol::ChromosomePtr toCross) const
 {
-    std::vector<int> sequence(kolejnosc_.size());
-    std::vector<int> notUsed;
-    unsigned int i = 0;
-    for(auto& elem : sequence)
-    {
-        elem = i;
-        notUsed.push_back(i);
-        ++i;
-    }
-    std::random_shuffle(sequence.begin(),sequence.end());
+    std::map<int,int> notUsed;
+    for( int i = 0; i < kolejnosc_.size(); ++i )
+        notUsed[i]=i;
+
     Kolejnosc *newKolejnosc = new Kolejnosc();
-    assert(newKolejnosc != NULL && "Allocation failure.");
     std::vector<int>& k = newKolejnosc->kolejnosc_;
-    for(auto& elem : sequence)
+    
+    int toAdd;
+    double random_value = evol::EvolFunctions::random();
+    int max_first = random_value*kolejnosc_.size();
+    int i = 0;
+
+
+    for(; i < max_first; ++i)
     {
-        int parentA = evol::EvolFunctions::ptr_cast<evol::ChromosomePtr,Kolejnosc>(toCross)->kolejnosc_[elem];
-        int parentB = kolejnosc_[elem];
-        bool aAvailable = (std::find(k.begin(),k.end(),parentA) == k.end());
-        bool bAvailable = (std::find(k.begin(),k.end(),parentB) == k.end());
-        
-        if(aAvailable && bAvailable)
-        {
-            k[elem]  = (evol::EvolFunctions::random()>0.5) ? parentA : parentB;
-        }
-        else if(aAvailable)
-        {
-            k[elem] = parentA;
-        }
-        else if(bAvailable)
-        {
-            k[elem] = parentB;
-        }
-        else
-        {
-            unsigned int position = evol::EvolFunctions::random(0,notUsed.size()-1);
-            k[elem] = *(notUsed.begin()+position);
-        }
-        notUsed.erase(std::find(notUsed.begin(),notUsed.end(),k[elem]));
+        toAdd = kolejnosc_[i];
+        k[i] = toAdd;
+        notUsed.erase(toAdd);                                           
     }
-    assert(notUsed.empty() && "Each element should be taken.");
-    assert(k.size() == kolejnosc_.size() && "Size of kolejnosc should be the same, after crossover.");
+    int j = 0;
+    for(; i < kolejnosc_.size(); ++i,++j)
+    {
+        std::vector<int>& toCpy = 
+            evol::EvolFunctions::ptr_cast<evol::ChromosomePtr, Kolejnosc>(toCross)->kolejnosc_;
+        for(; j<toCpy.size(); ++j)
+        {
+            if(notUsed.find(toCpy[j]) != notUsed.end())
+                break;                
+        }
+        toAdd = toCpy[j];
+        k[i] = toAdd;
+        notUsed.erase(toAdd);
+    }
     return evol::ChromosomePtr(newKolejnosc);
+
 }
 
 void Kolejnosc::mutate()
