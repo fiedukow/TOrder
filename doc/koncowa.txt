@@ -1,0 +1,153 @@
+TOrder
+======
+Dokumentacja koncowa.
+Aplikacja rozwiązująca problemy Flow Shop z wykorzystaniem algorytmów ewolucyjnych.
+
+Autorzy:
+
+* Andrzej Fiedukowicz
+* Maciej Grzybek
+* Edward Miedziński
+
+Definicja zadania
+=================
+
+Treść zadania
+-------------
+System obsługi składa się z m maszyn i n zadań wykonujących się na tych maszynach. Dla każdego zadania zdefiniowany jest czas tij wykonania zadania i-tego na j-tej maszynie. Celem optymalizacji jest znalezienie za pomocą algorytmu ewolucyjnego takiej kolejności wykonywania zadań , aby całkowity czas zakończenia się wszystkich zadań byłnajmniejszy.
+
+Analiza treści
+--------------
+Treść zadania opisuje problem znany pod nazwą FlowShop.
+W problemie tym mamy doczynienia z serią zadań, z których każde musi być przetworzone kolejno przez konkretną ilość maszyn.
+Każdej parze zadanie-maszyna przypisany jest czas jaki zadanie jest wykonywane na maszynie.
+Każda maszyna może jednocześnie wykonywać jedno zadanie.
+Przed każdą maszyną może ustawić się kolejka oczekujących na jej zwolnienie zadań, jest to kolejka typu FIFO (a więc kolejność zadań na każdej maszynie jest taka sama).
+
+Dane wejściowe
+--------------
+Wartości czasu wykonywania dla każdej pary zadanie-maszyna.
+Przyjęto wygodną konwencję podawania tych danych w formie tabelarycznej.
+
+Dane wyjściowe
+--------------
+Permutacja zbioru zadań, dla której czas wykonania ich wszystkich w zadanej kolejności jest możliwie najmniejszy.
+
+Metodyka pracy
+==============
+
+Wstep
+-----
+We wstepnej fazie rozwiązywania problemu skupiono się na stworzeniu bazowych elementów w szczególności zdefiniowaniu kluczowych z punktu widzenia algorytmów ewolucyjnych pojęć takich jak osobnik, funkcja przystosowania czy chromosomy w kontekscie problemu.
+Przyjęto następujące definicje:
+
+* Osobnik - tym pojęciem w kontekscie problemu nazwano plan wykonania, czyli ogół danych wymaganych do przeprowadzenia symulacji wykonania zadań w zadanej kolejności.
+* Chromosomy - dla zadanego problemu zdecydowano się zdefiniować tylko jeden chromosom nazywany Kolejnoscia opisujacy permutacje zbioru zadan.
+* Funkcja przystosowania - dla problemu uznano że funkcją przystosowania jest czas wykonywania zadan dla zadanego planu wykonania. Funkcję tę nazwano Czasem Wykonania. Naturalnie im mniejszy czas tym wynik wynik funkcji przystosowania lepszy z punktu widzenia algorytmu (tj. Plan Wykonania na podstawie którego wyliczono wartość funkcji jest lepszy).
+
+Implementacja obliczenia czasu wykonania
+----------------------------------------
+
+Ze względu na brak innych koncepcji zdecydowano się obliczać ten czas przy użyciu prostej symulacji dzialania systemu wg. algorytmu:
+
+`n := ilosc maszyn`
+`m := ilosc zadan`
+`czas := 0`
+`1. Stworz n kolejek FIFO, oraz struktur maszyn z których kazda charakteryzuje sie czasem do konca zakonczenia biezacego zadania oraz numerem obecnego zadania. Ustaw czas do zakonczenia zadania dla kazdej maszyny na 0.`
+`2. Do pierwszej z kolejek wloz w zadanej w planie wykonania kolejnosci wszystkie zadania.`
+`3. Powtarzaj kroki 4-8 dopoki wszystkie kolejki beda puste a maszyny nie beda pracowaly nad zadnymi zadaniami, w przeciwnym razie skocz do 9.`
+`4. Znajdz maszyne dla której czas do zakonczenia biezacego zadania jest najmniejszy (koniecznie iterować po maszynach w kolejności naturalnej) min := czas do zakonczenia tego zadania. czas := czas + min`
+`5. Dla kazdej maszyny jesli wykonuje ona jakies zadanie zmniejsz czas do konca jego wykonania o min. Jesli po zmniejszeniu czasu czas wykonania jest rowny zero, wykonaj kroki 6-7, w przeciwnym razie skocz do 8.`
+`6. Przesun biezace zadanie do kolejki maszyny nastepujacej po obecnej o ile taka istnieje.`
+`7. Ustaw jako biezace zadanie zadanie wyjete z kolejki (jesli takie istnieje), ustaw czas do konca wykonania na czas wykonania wyjetego zadania na biezacej maszynie.`
+`8. Wroc do punktu 3.`
+`9. Podaj czas jako wynik algorytmu.`
+
+Dobór operatorów algorytmu ewolucyjnego
+---------------------------------------
+W ramach Kolejnosci Wykonywania, by w pelni wykorzystac mozliwosci bilioteki evol oraz algorytmów ewolucyjnych jako takich, nalezalo zdefiniować dwa operatory.
+
+###Mutacja
+Operator mutacji ma za zadanie wprowadzac niewielkie, losowe zmiany w obrebie pojedynczego osobnika majace wprowadzac (poslugujac sie analogia do biologi) roznorodnosc genetyczna w obrebie populacji. 
+Operator taki ma za zadanie zmieniac wewnętrznie obiekt (w tym wypadku chromosom Kolejnosc) na ktorym zostal wywolany.
+Zdefiniowanie tego rodzaju operatora nie nastręczało szczególnie dużych kłopotów, uznano bowiem, że prostym a zarazem poprawnym w kontekscie problemu rozwiązaniem jest opisanie operatora nastepujacym algorytmem:
+
+`n := ilosc zadan`
+`WSP := 0.1`
+`1. Powtarzaj z prawdopodobienstwem WSP kroki 2-3, chyba ze zostaną one powtórzone już n razy.`
+`2. Wybierz losowa parę pozycji z permutacji.`
+`3. Zamien miejscami zadania stojace na wybranych miejscach.`
+
+Ponieważ w ten sposób zdefiniowany operator nie nastręczał problemów, działał szybko i spełniał swoją rolę to jest zapewniał różnorodność osobników przy jednoczesnym zachowaniu większości informacji niesionej przez chomosom (którą stanowi kolejność elementów), nie był on zmieniany w trakcie pracy nad aplikacją.
+
+Procent osobnikow podlegajacym w kazdym pokoleniu mutacjom jest definiowalny przez uzytkownika w ramach funkcjonalnosci biblioteki evol.
+
+###Krzyzowanie
+Operator krzyżowania ma za zadanie tworzyć nowego osobnika (tu Plan Wykonania) na podstawie dwóch lub więcej (tu dwóch) osobników wejściowych.
+Zdefiniowanie tego operatora nie było oczywiste a to dlatego, że nie oczywistym było początkowo co jest faktyczną informacją niesioną przez mutację wpływającą bezpośrednio na wynik funkcji przystosowania.
+Poczatkowym pomyslem bylo zdefiniowanie tego operatora wg. nastepujacego algorytmu.
+`1. Stwórz nowego osobnika z pustymi miejscami na kolejne pozycje w zbiorze permutacji`
+`2. Dopóki nie bedą zapełnione wszystkie miejsca powtarzaj krok 3`
+`3. Wybierz losowa pozycje sposrod niezapelnionych w nowo tworzonym osobniku`
+`    3.1. Jesli zaden z rodzicow nie ma na tej pozycji zadania jeszcze nie wykorzystanego w dziecku, wybierz na tą pozycję w dziecku losowe spośród jeszcze nie wykorzystanych w dziecku zadań.`
+`    3.2. Jeśli jeden z rodziców ma na tej pozycji zadanie jeszcze nie wykorzystane w dziecku, wstaw na tę pozycję to zadanie.``
+`    3.3. Jeśli u odydwu rodziców na tej pozycji znajduje się zadanie, które nie było jeszce wykorzystane w dziecku wybierz losowe z nich i wstaw na tę pozycję u dziecka.`
+
+Niestety rozwiązanie to miało wiele wad, z których podstawową było bardzo powolne poprawianie się wyników. Kiladziesiąd tysięcy pokoleń (~80tys), dla małego problemu (20 zadań, 5 maszyn)  dawało wyniki dalekie od referencyjnych (jak sie pozniej okazalo osiagalne w ciagu zaledwie kilkunastu pokoleń.
+Po analizie, wysnuto wniosek, że właściwą informacją dla permutacji nie jest występowanie elementu na pozycji a raczej lista poprzedników i lista następników, to jest co stoi przed a co zadaniu.
+
+Postanowiono więc zastanowić się nad rozwiązaniem posiadającym tę właściwość w wyniku czego powstał nowy (jak się później okazało) rzędy wielkości sprawniejszy algorytm wg. którego wyznaczano nowego osobnika na podstawie dwoch wejsciowych:
+`n = ilość zadań`
+`1. Wylosuj punkt cięcia między 1 a n-1`
+`2. Przepisz z pierwszego rodzica zawrtość pozycji w permutacji do punktu przecięcia`
+`3. Uzupełnij brakujące pozycje przy użyciu drugiego rodzica wpisując brakujące elementy w permutację dziecka w takiej kolejności w jakiej pojawiały się w drugim rodzicu.`
+
+Ten alogorytm pozwolił na odnajdowanie dobrych wyników na wcześniej podanym wejściu (20 zadań, 5 maszyn) w ciągu kilku lub kilkunastu (8-12) pokoleń (zamiast wcześniejszych 80tys).
+Dzięki tej metodzie krzyżowania zaczęto w rosądnym czasie otrzymywać wartości równe referencyjnym (~2000 pokoleń dla małego problemu).
+Warto zwrócić uwagę, że metoda ta nie jest symetryczna tj. nie traktuje identycznie każdego z rodziców, jednakże ze wzgledu na to że biblioteka evol zapewnia wylosowanie z równym prawdopodobieństwem upordządkowanej pary osobników A-B i B-A, nie stanowi to problemu natury statystycznej (tj. dla nieskończonej próby różnica ta nie ma znaczenia).
+
+Ilość osobników tworzonych w każdym pokoleniu w ten sposób jak i proces losowania osobników do krzyżowania jest obsługiwany przez bibliotekę evol.
+
+
+Optymalizacja wydajnosciowa
+---------------------------
+
+Ze względu na to, że pomiary wykazały, że większość czasu aplikacja spędza na przeliczaniu wartości funkcji przystosowania, w szczególności wielokrotnie dla takich samych osobnikow, zastosowano cachowanie wynikow obliczeń (symulacji) dla poszczególnych osobników.
+Dzięki temu, osobniki, które w danym pokoleniu nie uległy zmianie nie musiały być po raz kolejny symulowane.
+Ta optymalizacja przyśpieszyła działanie aplikacji ~25 krotnie (wyniki pomiarów wahały się między 23 a 25 razy).
+Ponieważ optymalizacja ta była wystarczająca by osiągnać wyniki referencyjne w zadowalającym czasie uznano, że dalsze optymalizowanie kodu nie jest konieczne.
+
+Wymagania techniczne
+====================
+
+* gcc >= 4.6.2, lub inny kompilator wspierający standard C++11
+* biblioteka boost::optional wraz z zależnościami
+* scons (aplikacja do budowania projektu)
+
+
+Procedury testowe
+=================
+Wszystkie testy wykonywane były na tej samej platformie sprzętowej z uruchomionym jedynie minimalnym środowiskiem by zewnętrzne aplikacje w możlwie małym stopniu wpływały na wyniki pomiarów.
+Procedury testowe aplikacji obejmowały przedewszystkim dwa scenariusze:
+
+###Testy poprawności alogrymtów
+Algorytmy krzyżowania, mutacji oraz funkcji przystosowania były sprawdzone w następujący sposób.
+Do tych testów wykorzystano mały problem, możliwy do rozwiązania klasyczymi metodami.
+Wykorzystano stałe ziarno generatora liczb pseudolosowych i dla wygenerowanych przez niego liczb obliczono oczekiwane wartości wynikowe w poszczególnych krokach.
+W ostatecznej wersji aplikacji wszystkie testy zakończyły się powodzeniem.
+
+###Testy sprawności algorytmów
+Testy te miały za zadanie sprawdzić czy gotowa aplikacja jest w stanie w rozsądnym czasie dojść do wyników conajmniej tak samo dobrych jak wyniki referencyjne.
+Aplikacja we wczesnych fazach projektu nie dawała zadowalających wyników mimo, że była dla małej próby (20 zadań 5 maszyn) uruchamiana na wiele godzin.
+Po zmianie operatora krzyżowania (jak wyżej) i optymalizacji wydajnościowej, wyniki referencyjne były jednak osiągane w czasie poniżej jednej godziny dla tej samej (małej) próby.
+Wynik ten uznano za zadowalający.
+
+
+Dane referencyjne
+=================
+
+Wykorzystanie aplikacji koncowej
+================================
+
+Lista zalacznikow
+=================
