@@ -90,7 +90,7 @@ Poczatkowym pomyslem bylo zdefiniowanie tego operatora wg. nastepujacego algoryt
 `2. Dopóki nie bedą zapełnione wszystkie miejsca powtarzaj krok 3`
 `3. Wybierz losowa pozycje sposrod niezapelnionych w nowo tworzonym osobniku`
 `    3.1. Jesli zaden z rodzicow nie ma na tej pozycji zadania jeszcze nie wykorzystanego w dziecku, wybierz na tą pozycję w dziecku losowe spośród jeszcze nie wykorzystanych w dziecku zadań.`
-`    3.2. Jeśli jeden z rodziców ma na tej pozycji zadanie jeszcze nie wykorzystane w dziecku, wstaw na tę pozycję to zadanie.``
+`    3.2. Jeśli jeden z rodziców ma na tej pozycji zadanie jeszcze nie wykorzystane w dziecku, wstaw na tę pozycję to zadanie.`
 `    3.3. Jeśli u odydwu rodziców na tej pozycji znajduje się zadanie, które nie było jeszce wykorzystane w dziecku wybierz losowe z nich i wstaw na tę pozycję u dziecka.`
 
 Niestety rozwiązanie to miało wiele wad, z których podstawową było bardzo powolne poprawianie się wyników. Kiladziesiąd tysięcy pokoleń (~80tys), dla małego problemu (20 zadań, 5 maszyn)  dawało wyniki dalekie od referencyjnych (jak sie pozniej okazalo osiagalne w ciagu zaledwie kilkunastu pokoleń.
@@ -154,11 +154,11 @@ Wykorzystanie aplikacji koncowej
 Wejscie
 -------
 
-$./bin/TOrder plik_wejsciowy wartosc_docelowa_funkcji_przystosowania wielosc_populacji wspolczynnikmutacji wspolczynnik_krzyzowania
+$./bin/TOrder (plik wejsciowy) (wartosc docelowa funkcji przystosowania) (wielosc populacji) (wspolczynnik mutacji) (wspolczynnik krzyzowania)
 Gdzie:
 
-* plik_wejsciowy - sciezka do pliku w formacie:
-`ilosc_maszyn(n) ilosc_zadan(m)`
+* plik wejsciowy - sciezka do pliku w formacie:
+`ilosc maszyn(n) ilosc zadan(m)`
 `czas(1,1).............czas(1,m)`
 `.  .                         . `
 `.      .                     . `
@@ -166,10 +166,10 @@ Gdzie:
 `.              .             . `
 `.                  .         . `
 `czas(n,1).............czas(n,m)`
-* wartosc_docelowa_funkcji_przystosowania - wartosc funkcji przystosowania po ktorej osiagnieciu badz przekroczeniu (w tym wypadku przekroczenie oznacza zajscie z czasem wykonania poniżej tej wartości) program zakończy działanie.
-* wielkosc_populacji - ilosc osobnikow w populacji po fazie selekcji
-* wspolczynnik_mutacji - jaki procent osobnikow w kazdym pokoleniu ma zostac poddany mutacji
-* wspolczynnik_krzyzowania - jak duza ma byc populacja przed fazą selekcji w stosunku do startowej (dodatkowe osobniki będą wygenerowane przez losowe krzyżowania). np. dla wielkości populacji 1000 i współczynnika krzyżowania 2.0 zostanie wybrancyh 1000 par z których powstanie 1000 dzieci, czyli przd fazą selekcji populacja będzie liczyła 2*1000=2000 osobników.
+* wartosc docelowa funkcji przystosowania - wartosc funkcji przystosowania po ktorej osiagnieciu badz przekroczeniu (w tym wypadku przekroczenie oznacza zajscie z czasem wykonania poniżej tej wartości) program zakończy działanie.
+* wielkosc populacji - ilosc osobnikow w populacji po fazie selekcji
+* wspolczynnik mutacji - jaki procent osobnikow w kazdym pokoleniu ma zostac poddany mutacji
+* wspolczynnik krzyzowania - jak duza ma byc populacja przed fazą selekcji w stosunku do startowej (dodatkowe osobniki będą wygenerowane przez losowe krzyżowania). np. dla wielkości populacji 1000 i współczynnika krzyżowania 2.0 zostanie wybrancyh 1000 par z których powstanie 1000 dzieci, czyli przd fazą selekcji populacja będzie liczyła 2*1000=2000 osobników.
 
 np.
 $./bin/TOrder data/TAILARD_5_20_1.dat 1278 1000 0.3 2.0

@@ -1,0 +1,197 @@
+<head>
+    <title>Dokumentacja koncowa TOrder</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="Stylesheet" type="text/css" href="md.css">
+</head>
+<body>
+<h1>TOrder</h1>
+
+<p>Dokumentacja koncowa.
+Aplikacja rozwiązująca problemy Flow Shop z wykorzystaniem algorytmów ewolucyjnych.</p>
+
+<p>Autorzy:</p>
+
+<ul>
+<li>Andrzej Fiedukowicz</li>
+<li>Maciej Grzybek</li>
+<li>Edward Miedziński</li>
+</ul>
+
+<h1>Definicja zadania</h1>
+
+<h2>Treść zadania</h2>
+
+<p>System obsługi składa się z m maszyn i n zadań wykonujących się na tych maszynach. Dla każdego zadania zdefiniowany jest czas tij wykonania zadania i-tego na j-tej maszynie. Celem optymalizacji jest znalezienie za pomocą algorytmu ewolucyjnego takiej kolejności wykonywania zadań , aby całkowity czas zakończenia się wszystkich zadań byłnajmniejszy.</p>
+
+<h2>Analiza treści</h2>
+
+<p>Treść zadania opisuje problem znany pod nazwą FlowShop.
+W problemie tym mamy doczynienia z serią zadań, z których każde musi być przetworzone kolejno przez konkretną ilość maszyn.
+Każdej parze zadanie-maszyna przypisany jest czas jaki zadanie jest wykonywane na maszynie.
+Każda maszyna może jednocześnie wykonywać jedno zadanie.
+Przed każdą maszyną może ustawić się kolejka oczekujących na jej zwolnienie zadań, jest to kolejka typu FIFO (a więc kolejność zadań na każdej maszynie jest taka sama).</p>
+
+<h2>Dane wejściowe</h2>
+
+<p>Wartości czasu wykonywania dla każdej pary zadanie-maszyna.
+Przyjęto wygodną konwencję podawania tych danych w formie tabelarycznej.</p>
+
+<h2>Dane wyjściowe</h2>
+
+<p>Permutacja zbioru zadań, dla której czas wykonania ich wszystkich w zadanej kolejności jest możliwie najmniejszy.</p>
+
+<h1>Metodyka pracy</h1>
+
+<h2>Wstep</h2>
+
+<p>We wstepnej fazie rozwiązywania problemu skupiono się na stworzeniu bazowych elementów w szczególności zdefiniowaniu kluczowych z punktu widzenia algorytmów ewolucyjnych pojęć takich jak osobnik, funkcja przystosowania czy chromosomy w kontekscie problemu.
+Przyjęto następujące definicje:</p>
+
+<ul>
+<li>Osobnik - tym pojęciem w kontekscie problemu nazwano plan wykonania, czyli ogół danych wymaganych do przeprowadzenia symulacji wykonania zadań w zadanej kolejności.</li>
+<li>Chromosomy - dla zadanego problemu zdecydowano się zdefiniować tylko jeden chromosom nazywany Kolejnoscia opisujacy permutacje zbioru zadan.</li>
+<li>Funkcja przystosowania - dla problemu uznano że funkcją przystosowania jest czas wykonywania zadan dla zadanego planu wykonania. Funkcję tę nazwano Czasem Wykonania. Naturalnie im mniejszy czas tym wynik wynik funkcji przystosowania lepszy z punktu widzenia algorytmu (tj. Plan Wykonania na podstawie którego wyliczono wartość funkcji jest lepszy).</li>
+</ul>
+
+<h2>Implementacja obliczenia czasu wykonania</h2>
+
+<p>Ze względu na brak innych koncepcji zdecydowano się obliczać ten czas przy użyciu prostej symulacji dzialania systemu wg. algorytmu:</p>
+
+<p><code>n := ilosc maszyn</code>
+<code>m := ilosc zadan</code>
+<code>czas := 0</code>
+<code>1. Stworz n kolejek FIFO, oraz struktur maszyn z których kazda charakteryzuje sie czasem do konca zakonczenia biezacego zadania oraz numerem obecnego zadania. Ustaw czas do zakonczenia zadania dla kazdej maszyny na 0.</code>
+<code>2. Do pierwszej z kolejek wloz w zadanej w planie wykonania kolejnosci wszystkie zadania.</code>
+<code>3. Powtarzaj kroki 4-8 dopoki wszystkie kolejki beda puste a maszyny nie beda pracowaly nad zadnymi zadaniami, w przeciwnym razie skocz do 9.</code>
+<code>4. Znajdz maszyne dla której czas do zakonczenia biezacego zadania jest najmniejszy (koniecznie iterować po maszynach w kolejności naturalnej) min := czas do zakonczenia tego zadania. czas := czas + min</code>
+<code>5. Dla kazdej maszyny jesli wykonuje ona jakies zadanie zmniejsz czas do konca jego wykonania o min. Jesli po zmniejszeniu czasu czas wykonania jest rowny zero, wykonaj kroki 6-7, w przeciwnym razie skocz do 8.</code>
+<code>6. Przesun biezace zadanie do kolejki maszyny nastepujacej po obecnej o ile taka istnieje.</code>
+<code>7. Ustaw jako biezace zadanie zadanie wyjete z kolejki (jesli takie istnieje), ustaw czas do konca wykonania na czas wykonania wyjetego zadania na biezacej maszynie.</code>
+<code>8. Wroc do punktu 3.</code>
+<code>9. Podaj czas jako wynik algorytmu.</code></p>
+
+<h2>Dobór operatorów algorytmu ewolucyjnego</h2>
+
+<p>W ramach Kolejnosci Wykonywania, by w pelni wykorzystac mozliwosci bilioteki evol oraz algorytmów ewolucyjnych jako takich, nalezalo zdefiniować dwa operatory.</p>
+
+<h3>Mutacja</h3>
+
+<p>Operator mutacji ma za zadanie wprowadzac niewielkie, losowe zmiany w obrebie pojedynczego osobnika majace wprowadzac (poslugujac sie analogia do biologi) roznorodnosc genetyczna w obrebie populacji. 
+Operator taki ma za zadanie zmieniac wewnętrznie obiekt (w tym wypadku chromosom Kolejnosc) na ktorym zostal wywolany.
+Zdefiniowanie tego rodzaju operatora nie nastręczało szczególnie dużych kłopotów, uznano bowiem, że prostym a zarazem poprawnym w kontekscie problemu rozwiązaniem jest opisanie operatora nastepujacym algorytmem:</p>
+
+<p><code>n := ilosc zadan</code>
+<code>WSP := 0.1</code>
+<code>1. Powtarzaj z prawdopodobienstwem WSP kroki 2-3, chyba ze zostaną one powtórzone już n razy.</code>
+<code>2. Wybierz losowa parę pozycji z permutacji.</code>
+<code>3. Zamien miejscami zadania stojace na wybranych miejscach.</code></p>
+
+<p>Ponieważ w ten sposób zdefiniowany operator nie nastręczał problemów, działał szybko i spełniał swoją rolę to jest zapewniał różnorodność osobników przy jednoczesnym zachowaniu większości informacji niesionej przez chomosom (którą stanowi kolejność elementów), nie był on zmieniany w trakcie pracy nad aplikacją.</p>
+
+<p>Procent osobnikow podlegajacym w kazdym pokoleniu mutacjom jest definiowalny przez uzytkownika w ramach funkcjonalnosci biblioteki evol.</p>
+
+<h3>Krzyzowanie</h3>
+
+<p>Operator krzyżowania ma za zadanie tworzyć nowego osobnika (tu Plan Wykonania) na podstawie dwóch lub więcej (tu dwóch) osobników wejściowych.
+Zdefiniowanie tego operatora nie było oczywiste a to dlatego, że nie oczywistym było początkowo co jest faktyczną informacją niesioną przez mutację wpływającą bezpośrednio na wynik funkcji przystosowania.
+Poczatkowym pomyslem bylo zdefiniowanie tego operatora wg. nastepujacego algorytmu.
+<code>1. Stwórz nowego osobnika z pustymi miejscami na kolejne pozycje w zbiorze permutacji</code>
+<code>2. Dopóki nie bedą zapełnione wszystkie miejsca powtarzaj krok 3</code>
+<code>3. Wybierz losowa pozycje sposrod niezapelnionych w nowo tworzonym osobniku</code>
+<code>3.1. Jesli zaden z rodzicow nie ma na tej pozycji zadania jeszcze nie wykorzystanego w dziecku, wybierz na tą pozycję w dziecku losowe spośród jeszcze nie wykorzystanych w dziecku zadań.</code>
+<code>3.2. Jeśli jeden z rodziców ma na tej pozycji zadanie jeszcze nie wykorzystane w dziecku, wstaw na tę pozycję to zadanie.</code>
+<code>3.3. Jeśli u odydwu rodziców na tej pozycji znajduje się zadanie, które nie było jeszce wykorzystane w dziecku wybierz losowe z nich i wstaw na tę pozycję u dziecka.</code></p>
+
+<p>Niestety rozwiązanie to miało wiele wad, z których podstawową było bardzo powolne poprawianie się wyników. Kiladziesiąd tysięcy pokoleń (~80tys), dla małego problemu (20 zadań, 5 maszyn)  dawało wyniki dalekie od referencyjnych (jak sie pozniej okazalo osiagalne w ciagu zaledwie kilkunastu pokoleń.
+Po analizie, wysnuto wniosek, że właściwą informacją dla permutacji nie jest występowanie elementu na pozycji a raczej lista poprzedników i lista następników, to jest co stoi przed a co zadaniu.</p>
+
+<p>Postanowiono więc zastanowić się nad rozwiązaniem posiadającym tę właściwość w wyniku czego powstał nowy (jak się później okazało) rzędy wielkości sprawniejszy algorytm wg. którego wyznaczano nowego osobnika na podstawie dwoch wejsciowych:
+<code>n = ilość zadań</code>
+<code>1. Wylosuj punkt cięcia między 1 a n-1</code>
+<code>2. Przepisz z pierwszego rodzica zawrtość pozycji w permutacji do punktu przecięcia</code>
+<code>3. Uzupełnij brakujące pozycje przy użyciu drugiego rodzica wpisując brakujące elementy w permutację dziecka w takiej kolejności w jakiej pojawiały się w drugim rodzicu.</code></p>
+
+<p>Ten alogorytm pozwolił na odnajdowanie dobrych wyników na wcześniej podanym wejściu (20 zadań, 5 maszyn) w ciągu kilku lub kilkunastu (8-12) pokoleń (zamiast wcześniejszych 80tys).
+Dzięki tej metodzie krzyżowania zaczęto w rosądnym czasie otrzymywać wartości równe referencyjnym (~2000 pokoleń dla małego problemu).
+Warto zwrócić uwagę, że metoda ta nie jest symetryczna tj. nie traktuje identycznie każdego z rodziców, jednakże ze wzgledu na to że biblioteka evol zapewnia wylosowanie z równym prawdopodobieństwem upordządkowanej pary osobników A-B i B-A, nie stanowi to problemu natury statystycznej (tj. dla nieskończonej próby różnica ta nie ma znaczenia).</p>
+
+<p>Ilość osobników tworzonych w każdym pokoleniu w ten sposób jak i proces losowania osobników do krzyżowania jest obsługiwany przez bibliotekę evol.</p>
+
+<h2>Optymalizacja wydajnosciowa</h2>
+
+<p>Ze względu na to, że pomiary wykazały, że większość czasu aplikacja spędza na przeliczaniu wartości funkcji przystosowania, w szczególności wielokrotnie dla takich samych osobnikow, zastosowano cachowanie wynikow obliczeń (symulacji) dla poszczególnych osobników.
+Dzięki temu, osobniki, które w danym pokoleniu nie uległy zmianie nie musiały być po raz kolejny symulowane.
+Ta optymalizacja przyśpieszyła działanie aplikacji ~25 krotnie (wyniki pomiarów wahały się między 23 a 25 razy).
+Ponieważ optymalizacja ta była wystarczająca by osiągnać wyniki referencyjne w zadowalającym czasie uznano, że dalsze optymalizowanie kodu nie jest konieczne.</p>
+
+<h1>Wymagania techniczne</h1>
+
+<ul>
+<li>gcc >= 4.6.2, lub inny kompilator wspierający standard C++11</li>
+<li>biblioteka boost::optional wraz z zależnościami</li>
+<li>scons (aplikacja do budowania projektu)</li>
+</ul>
+
+<h1>Procedury testowe</h1>
+
+<p>Wszystkie testy wykonywane były na tej samej platformie sprzętowej z uruchomionym jedynie minimalnym środowiskiem by zewnętrzne aplikacje w możlwie małym stopniu wpływały na wyniki pomiarów.
+Procedury testowe aplikacji obejmowały przedewszystkim dwa scenariusze:</p>
+
+<h3>Testy poprawności alogrymtów</h3>
+
+<p>Algorytmy krzyżowania, mutacji oraz funkcji przystosowania były sprawdzone w następujący sposób.
+Do tych testów wykorzystano mały problem, możliwy do rozwiązania klasyczymi metodami.
+Wykorzystano stałe ziarno generatora liczb pseudolosowych i dla wygenerowanych przez niego liczb obliczono oczekiwane wartości wynikowe w poszczególnych krokach.
+W ostatecznej wersji aplikacji wszystkie testy zakończyły się powodzeniem.</p>
+
+<h3>Testy sprawności algorytmów</h3>
+
+<p>Testy te miały za zadanie sprawdzić czy gotowa aplikacja jest w stanie w rozsądnym czasie dojść do wyników conajmniej tak samo dobrych jak wyniki referencyjne.
+Aplikacja we wczesnych fazach projektu nie dawała zadowalających wyników mimo, że była dla małej próby (20 zadań 5 maszyn) uruchamiana na wiele godzin.
+Po zmianie operatora krzyżowania (jak wyżej) i optymalizacji wydajnościowej, wyniki referencyjne były jednak osiągane w czasie poniżej jednej godziny dla tej samej (małej) próby.
+Wynik ten uznano za zadowalający.</p>
+
+<h1>Dane referencyjne</h1>
+
+<p>Dane referencyjne wraz z wynikami pobrano ze strony http://mistic.heig-vd.ch/taillard/problemes.dir/ordonnancement.dir/ordonnancement.html.
+Część spośród tych danych w formacie gotowym do użycia w aplikacji TOrder zostało umieszczonych w plikach *.dat w podkatalogu data.</p>
+
+<h1>Wykorzystanie aplikacji koncowej</h1>
+
+<h2>Wejscie</h2>
+
+<p>$./bin/TOrder (plik wejsciowy) (wartosc docelowa funkcji przystosowania) (wielosc populacji) (wspolczynnik mutacji) (wspolczynnik krzyzowania)
+Gdzie:</p>
+
+<ul>
+<li>plik wejsciowy - sciezka do pliku w formacie:
+<code>ilosc maszyn(n) ilosc zadan(m)</code>
+<code>czas(1,1).............czas(1,m)</code>
+<code>.  .                         .</code>
+<code>.      .                     .</code>
+<code>.          .                 .</code>
+<code>.              .             .</code>
+<code>.                  .         .</code>
+<code>czas(n,1).............czas(n,m)</code></li>
+<li>wartosc docelowa funkcji przystosowania - wartosc funkcji przystosowania po ktorej osiagnieciu badz przekroczeniu (w tym wypadku przekroczenie oznacza zajscie z czasem wykonania poniżej tej wartości) program zakończy działanie.</li>
+<li>wielkosc populacji - ilosc osobnikow w populacji po fazie selekcji</li>
+<li>wspolczynnik mutacji - jaki procent osobnikow w kazdym pokoleniu ma zostac poddany mutacji</li>
+<li>wspolczynnik krzyzowania - jak duza ma byc populacja przed fazą selekcji w stosunku do startowej (dodatkowe osobniki będą wygenerowane przez losowe krzyżowania). np. dla wielkości populacji 1000 i współczynnika krzyżowania 2.0 zostanie wybrancyh 1000 par z których powstanie 1000 dzieci, czyli przd fazą selekcji populacja będzie liczyła 2*1000=2000 osobników.</li>
+</ul>
+
+<p>np.
+$./bin/TOrder data/TAILARD<em>5</em>20_1.dat 1278 1000 0.3 2.0</p>
+
+<h2>Wyjscie</h2>
+
+<p>Program poinformuje o każdej poprawie wartości funkcji przystosowania wyprowadzając na standardowe wyjście nową wartość funkcji przystosowania oraz charakterystykę osobnika, który ją osiągnął. Dzięki temu zatrzymanie aplikacji przed osiągnięciem zadanej wartości funkcji celu nie powoduje utraty dotychczasowych wyników obliczeń.</p>
+
+<h1>Lista zalacznikow</h1>
+
+<ul>
+<li>Kod źródłowy aplikacji</li>
+<li>Kod źródłowy biblioteki evol</li>
+<li>Dokumentacja biblioteki evol</li>
+<li>Skompilowana aplikacja dla architektury x86_64</li>
+</ul>
+</body>
