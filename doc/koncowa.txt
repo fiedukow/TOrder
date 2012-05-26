@@ -145,9 +145,45 @@ Wynik ten uznano za zadowalający.
 
 Dane referencyjne
 =================
+Dane referencyjne wraz z wynikami pobrano ze strony http://mistic.heig-vd.ch/taillard/problemes.dir/ordonnancement.dir/ordonnancement.html.
+Część spośród tych danych w formacie gotowym do użycia w aplikacji TOrder zostało umieszczonych w plikach *.dat w podkatalogu data.
 
 Wykorzystanie aplikacji koncowej
 ================================
 
+Wejscie
+-------
+
+$./bin/TOrder plik_wejsciowy wartosc_docelowa_funkcji_przystosowania wielosc_populacji wspolczynnikmutacji wspolczynnik_krzyzowania
+Gdzie:
+
+* plik_wejsciowy - sciezka do pliku w formacie:
+`ilosc_maszyn(n) ilosc_zadan(m)`
+`czas(1,1).............czas(1,m)`
+`.  .                         . `
+`.      .                     . `
+`.          .                 . `
+`.              .             . `
+`.                  .         . `
+`czas(n,1).............czas(n,m)`
+* wartosc_docelowa_funkcji_przystosowania - wartosc funkcji przystosowania po ktorej osiagnieciu badz przekroczeniu (w tym wypadku przekroczenie oznacza zajscie z czasem wykonania poniżej tej wartości) program zakończy działanie.
+* wielkosc_populacji - ilosc osobnikow w populacji po fazie selekcji
+* wspolczynnik_mutacji - jaki procent osobnikow w kazdym pokoleniu ma zostac poddany mutacji
+* wspolczynnik_krzyzowania - jak duza ma byc populacja przed fazą selekcji w stosunku do startowej (dodatkowe osobniki będą wygenerowane przez losowe krzyżowania). np. dla wielkości populacji 1000 i współczynnika krzyżowania 2.0 zostanie wybrancyh 1000 par z których powstanie 1000 dzieci, czyli przd fazą selekcji populacja będzie liczyła 2*1000=2000 osobników.
+
+np.
+$./bin/TOrder data/TAILARD_5_20_1.dat 1278 1000 0.3 2.0
+
+Wyjscie
+-------
+
+Program poinformuje o każdej poprawie wartości funkcji przystosowania wyprowadzając na standardowe wyjście nową wartość funkcji przystosowania oraz charakterystykę osobnika, który ją osiągnął. Dzięki temu zatrzymanie aplikacji przed osiągnięciem zadanej wartości funkcji celu nie powoduje utraty dotychczasowych wyników obliczeń.
+
+
 Lista zalacznikow
 =================
+
+* Kod źródłowy aplikacji
+* Kod źródłowy biblioteki evol
+* Dokumentacja biblioteki evol
+* Skompilowana aplikacja dla architektury x86_64

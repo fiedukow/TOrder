@@ -6,4 +6,4 @@ env = Environment(
                  )
 sourceTargets = Glob('*.cpp')
 
-env.Program('TOrder',sourceTargets)
+env.Program('../bin/TOrder',sourceTargets)

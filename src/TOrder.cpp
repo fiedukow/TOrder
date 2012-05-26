@@ -10,9 +10,10 @@ using namespace evol;
 
 int main( int argc, char* argv[] )
 {
-    if( argc < 4 )
+    if( argc < 6 )
     {
-        std::cout << "Usage: " << argv[0] << " fileWithTasks goalValue populationSize" << std::endl;
+        std::cout << "Usage: " << argv[0] << " fileWithTasks goalValue populationSize\
+                                             mutateFactor crossFactor" << std::endl;
         return -1;
     }
 
@@ -21,7 +22,8 @@ int main( int argc, char* argv[] )
     CzasWykonania goal(atoi(argv[2]));
     SubjectPtr realizacja( (Subject*) new Plan() );
     realizacja->setInitialValue();
-    Population populacja( ( FitnessFunction& ) goal, realizacja, atoi(argv[3]), 0.3, 2.0 );
+    Population populacja( ( FitnessFunction& ) goal, realizacja, 
+                        atoi(argv[3]), atof(argv[4]), atof(argv[5]) );
     populacja.registerObserver( NObserverPtr( new PodgladPostepu() ) );
 
     Plan *wynik;
