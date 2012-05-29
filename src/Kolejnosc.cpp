@@ -12,6 +12,7 @@
 
 Kolejnosc::Kolejnosc()
 {
+    evol::EvolFunctions::initialize();
     int zadan = ZarzadcaZadan::getInstance().getIloscZadan();
     for(int i=0; i<zadan; ++i)
     {

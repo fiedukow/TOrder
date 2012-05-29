@@ -1,3 +1,9 @@
+<head>
+    <title>Dokumentacja koncowa TOrder</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="Stylesheet" type="text/css" href="md.css">
+</head>
+<body>
 TOrder
 ======
 Dokumentacja koncowa.
@@ -179,6 +185,16 @@ Wyjscie
 
 Program poinformuje o każdej poprawie wartości funkcji przystosowania wyprowadzając na standardowe wyjście nową wartość funkcji przystosowania oraz charakterystykę osobnika, który ją osiągnął. Dzięki temu zatrzymanie aplikacji przed osiągnięciem zadanej wartości funkcji celu nie powoduje utraty dotychczasowych wyników obliczeń.
 
+<table border="1">
+<tr><th>Maszyn</th><th>Zadań</th><th>Wynik</th><th>Wynik refer.</th><th>Populacja</th><th>Wsp. mutacji</th><th>Wsp. krzyzowania</th><th>WynikPok</th><th>PokMax</th><th>Czas</th><th>PEŁNE WEJŚCIE</th></tr>
+<tr><td>5     </td><td>20   </td><td> 1278</td><td>1278        </td><td>1000     </td><td>0.3         </td><td>2.0             </td><td></td><td></td><td><a href="../data/TAILARD_5_20_1.dat" >TAILARD_5_20_1.dat</a></td></tr>
+<tr><td>10    </td><td>20   </td><td> 1582</td><td>1582        </td><td>10000    </td><td>0.2         </td><td>3.0             </td><td></td><td></td><td><a href="../data/TAILARD_10_20_1.dat" >TAILARD_10_20_1.dat</a></td></tr>
+<tr><td>5     </td><td>50   </td><td> 2724</td><td>2742        </td><td>10000    </td><td>0.2         </td><td>3.0             </td><td></td><td></td><td><a href="../data/TAILARD_5_50_1.dat" >TAILARD_5_50_1.dat</a></td></tr>
+</tr>
+<tr><td>5</td><td>20</td><td>1297</td><td>1278</td><td>1000</td><td>0.2</td><td>3.0</td><td>264</td><td>121</td><td><a href="../data/TAILARD_5_20_1.dat">data/TAILARD_5_20_1.dat</a></td></tr>
+<tr><td>5</td><td>20</td><td>1297</td><td>1278</td><td>1000</td><td>0.2</td><td>3.0</td><td>8</td><td>251</td><td>121</td><td><a href="../data/TAILARD_5_20_1.dat">data/TAILARD_5_20_1.dat</a></td></tr>
+
+</table>
 
 Lista zalacznikow
 =================
@@ -187,3 +203,4 @@ Lista zalacznikow
 * Kod źródłowy biblioteki evol
 * Dokumentacja biblioteki evol
 * Skompilowana aplikacja dla architektury x86_64
+</body>
