@@ -1,0 +1,13 @@
+#!/bin/sh
+
+echo "./bin/TOrder data/TAILARD_20_200_1.dat 11294 1000   0.4 3.0  14400   2>>result4.txt >>LOG4" >>LOG4
+      ./bin/TOrder data/TAILARD_20_200_1.dat 11294 1000   0.4 3.0  14400   2>>result4.txt >>LOG4
+
+echo "./bin/TOrder data/TAILARD_20_200_1.dat 11294 50     0.1 30.0 14400   2>>result4.txt >>LOG4" >>LOG4
+      ./bin/TOrder data/TAILARD_20_200_1.dat 11294 50     0.1 30.0 14400   2>>result4.txt >>LOG4
+
+echo "./bin/TOrder data/TAILARD_10_100_1.dat 5770  25000  0.2 3.0  14400   2>>result4.txt >>LOG4" >>LOG4
+      ./bin/TOrder data/TAILARD_10_100_1.dat 5770  25000  0.2 3.0  14400   2>>result4.txt >>LOG4
+
+echo "./bin/TOrder data/TAILARD_10_100_1.dat 5770  10000  0.0 3.0  14400   2>>result4.txt >>LOG4" >>LOG4
+      ./bin/TOrder data/TAILARD_10_100_1.dat 5770  10000  0.0 3.0  14400   2>>result4.txt >>LOG4
