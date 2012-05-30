@@ -46,3 +46,19 @@ code
     padding-left: 8px;
     margin-left: 10px;
 }
+
+table
+{
+    margin-left: 80px;
+}
+
+th
+{
+    padding: 5px 10px;
+    font-size: 10px;
+}
+
+td
+{
+    font-size: 10px;
+}

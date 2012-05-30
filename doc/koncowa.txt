@@ -185,15 +185,33 @@ Wyjscie
 
 Program poinformuje o każdej poprawie wartości funkcji przystosowania wyprowadzając na standardowe wyjście nową wartość funkcji przystosowania oraz charakterystykę osobnika, który ją osiągnął. Dzięki temu zatrzymanie aplikacji przed osiągnięciem zadanej wartości funkcji celu nie powoduje utraty dotychczasowych wyników obliczeń.
 
+
+Przykładowe rezultaty
+=====================
+Poniżej lista testów wraz z parametrami. Testy wykonywano w ostrych ograniczeniach czasowych stąd też wyniki w niektórych wypadkach (zwłaszcza w dużych próbach) są słabsze od wyników referencyjnych.
+W testach zaprezentowano zarówno zestawy parametrów prowadzące do rezultatów w krótkim czasie jak i takie, które do dobrych rezultatów w ogóle nie doprowadzają, by zaprezentować zestawy parametrów mniej i bardziej odpowiednie dla różnych rozmiarów próby.
+
+Jako załącznik do niniejszej dokumentacji dołączono logi wyjściowe skryptów testujących, dzięki którym można dokładnie prześledzić przebieg każdej z prób. W szczególności warto zwrócić uwagę na logi dużych prób, w wypadku, których można zaobserwować przerwania obliczeń w wyniku przekroczenia limitu czasu mimo tego, że nadal odnajdowane są regularnie lepsze wyniki (oznacza to, że wynik mógłby być znacząco lepszy gdyby aplikacja miała więcej czasu).
+
 <table border="1">
 <tr><th>Maszyn</th><th>Zadań</th><th>Wynik</th><th>Wynik refer.</th><th>Populacja</th><th>Wsp. mutacji</th><th>Wsp. krzyzowania</th><th>WynikPok</th><th>PokMax</th><th>Czas</th><th>PEŁNE WEJŚCIE</th></tr>
-<tr><td>5     </td><td>20   </td><td> 1278</td><td>1278        </td><td>1000     </td><td>0.3         </td><td>2.0             </td><td></td><td></td><td><a href="../data/TAILARD_5_20_1.dat" >TAILARD_5_20_1.dat</a></td></tr>
-<tr><td>10    </td><td>20   </td><td> 1582</td><td>1582        </td><td>10000    </td><td>0.2         </td><td>3.0             </td><td></td><td></td><td><a href="../data/TAILARD_10_20_1.dat" >TAILARD_10_20_1.dat</a></td></tr>
-<tr><td>5     </td><td>50   </td><td> 2724</td><td>2742        </td><td>10000    </td><td>0.2         </td><td>3.0             </td><td></td><td></td><td><a href="../data/TAILARD_5_50_1.dat" >TAILARD_5_50_1.dat</a></td></tr>
-</tr>
-<tr><td>5</td><td>20</td><td>1297</td><td>1278</td><td>1000</td><td>0.2</td><td>3.0</td><td>264</td><td>121</td><td><a href="../data/TAILARD_5_20_1.dat">data/TAILARD_5_20_1.dat</a></td></tr>
-<tr><td>5</td><td>20</td><td>1297</td><td>1278</td><td>1000</td><td>0.2</td><td>3.0</td><td>8</td><td>251</td><td>121</td><td><a href="../data/TAILARD_5_20_1.dat">data/TAILARD_5_20_1.dat</a></td></tr>
-
+<tr><td>5</td><td>20</td><td>1278</td><td>1278</td><td>50</td><td>0.2</td><td>300.0</td><td>827</td><td>829</td><td>2165</td><td><a href="../data/TAILARD_5_20_1.dat">data/TAILARD_5_20_1.dat</a></td></tr>
+<tr><td>5</td><td>20</td><td>1297</td><td>1278</td><td>1000</td><td>0.3</td><td>2.0</td><td>2725</td><td>7879</td><td>3601</td><td><a href="../data/TAILARD_5_20_1.dat">data/TAILARD_5_20_1.dat</a></td></tr>
+<tr><td>5</td><td>20</td><td>1359</td><td>1359</td><td>10000</td><td>0.2</td><td>3.0</td><td>14</td><td>154</td><td>879</td><td><a href="../data/TAILARD_5_20_2.dat">data/TAILARD_5_20_2.dat</a></td></tr>
+<tr><td>5</td><td>20</td><td>1359</td><td>1359</td><td>1000</td><td>0.8</td><td>1.5</td><td>56</td><td>3420</td><td>1312</td><td><a href="../data/TAILARD_5_20_2.dat">data/TAILARD_5_20_2.dat</a></td></tr>
+<tr><td>5</td><td>50</td><td>2724</td><td>2724</td><td>10000</td><td>0.2</td><td>3.0</td><td>13</td><td>18</td><td>264</td><td><a href="../data/TAILARD_5_50_1.dat">data/TAILARD_5_50_1.dat</a></td></tr>
+<tr><td>5</td><td>50</td><td>2734</td><td>2724</td><td>10000</td><td>1.0</td><td>1.0</td><td>45</td><td>920</td><td>7215</td><td><a href="../data/TAILARD_5_50_1.dat">data/TAILARD_5_50_1.dat</a></td></tr>
+<tr><td>10</td><td>20</td><td>1599</td><td>1582</td><td>10000</td><td>0.2</td><td>3.0</td><td>49</td><td>418</td><td>7224</td><td><a href="../data/TAILARD_10_20_1.dat">data/TAILARD_10_20_1.dat</a></td></tr>
+<tr><td>10</td><td>20</td><td>1586</td><td>1582</td><td>1000</td><td>0.3</td><td>2.0</td><td>35</td><td>6166</td><td>7202</td><td><a href="../data/TAILARD_10_20_1.dat">data/TAILARD_10_20_1.dat</a></td></tr>
+<tr><td>10</td><td>20</td><td>1715</td><td>1659</td><td>1000</td><td>0.8</td><td>1.5</td><td>3255</td><td>6926</td><td>7202</td><td><a href="../data/TAILARD_10_20_2.dat">data/TAILARD_10_20_2.dat</a></td></tr>
+<tr><td>20</td><td>100</td><td>6659</td><td>6286</td><td>10000</td><td>0.2</td><td>3.0</td><td>33</td><td>33</td><td>7615</td><td><a href="../data/TAILARD_20_100_1.dat">data/TAILARD_20_100_1.dat</a></td></tr>
+<tr><td>20</td><td>500</td><td>28927</td><td>26189</td><td>20000</td><td>0.2</td><td>3.0</td><td>7</td><td>7</td><td>18439s.</td><td><a href="../data/TAILARD_20_500_1.dat">data/TAILARD_20_500_1.dat</a></td></tr>
+<tr><td>20</td><td>500</td><td>28161</td><td>26629</td><td>3000</td><td>0.2</td><td>2.0</td><td>59</td><td>59</td><td>14888s.</td><td><a href="../data/TAILARD_20_500_2.dat">data/TAILARD_20_500_2.dat</a></td></tr>
+<tr><td>20</td><td>200</td><td>12076</td><td>11294</td><td>10000</td><td>0.2</td><td>3.0</td><td>29</td><td>30</td><td>15001s.</td><td><a href="../data/TAILARD_20_200_1.dat">data/TAILARD_20_200_1.dat</a></td></tr>
+<tr><td>20</td><td>200</td><td>11785</td><td>11294</td><td>1000</td><td>0.4</td><td>3.0</td><td>109</td><td>262</td><td>14496s.</td><td><a href="../data/TAILARD_20_200_1.dat">data/TAILARD_20_200_1.dat</a></td></tr>
+<tr><td>20</td><td>200</td><td>12407</td><td>11294</td><td>50</td><td>0.1</td><td>30.0</td><td>21</td><td>635</td><td>14444s.</td><td><a href="../data/TAILARD_20_200_1.dat">data/TAILARD_20_200_1.dat</a></td></tr>
+<tr><td>10</td><td>100</td><td>5838</td><td>5770</td><td>25000</td><td>0.2</td><td>3.0</td><td>76</td><td>76</td><td>14613s.</td><td><a href="../data/TAILARD_10_100_1.dat">data/TAILARD_10_100_1.dat</a></td></tr>
+<tr><td>10</td><td>100</td><td>6941</td><td>5770</td><td>10000</td><td>0.0</td><td>3.0</td><td>1</td><td>246</td><td>14465s.</td><td><a href="../data/TAILARD_10_100_1.dat">data/TAILARD_10_100_1.dat</a></td></tr>
 </table>
 
 Lista zalacznikow
@@ -203,4 +221,5 @@ Lista zalacznikow
 * Kod źródłowy biblioteki evol
 * Dokumentacja biblioteki evol
 * Skompilowana aplikacja dla architektury x86_64
+* <a href="LOG_WYJSCIOWY.txt">Logi wyjściowe przykładowych testów</a>
 </body>
